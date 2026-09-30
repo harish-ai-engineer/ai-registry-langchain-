@@ -2,20 +2,32 @@
 
     START -> agent --(tool calls?)--> tools -> agent -> ... -> END
 """
-from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import SystemMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from app.config import MAX_TOKENS, MODEL_NAME, SYSTEM_PROMPT
+from app.config import ANTHROPIC_MODEL, LLM_PROVIDER, MAX_TOKENS, OPENAI_MODEL, SYSTEM_PROMPT
 from app.tools import TOOLS
+
+
+def make_llm():
+    """Create the chat model for the provider set in LLM_PROVIDER."""
+    if LLM_PROVIDER == "openai":
+        from langchain_openai import ChatOpenAI
+
+        return ChatOpenAI(model=OPENAI_MODEL)
+    if LLM_PROVIDER == "anthropic":
+        from langchain_anthropic import ChatAnthropic
+
+        return ChatAnthropic(model=ANTHROPIC_MODEL, max_tokens=MAX_TOKENS)
+    raise ValueError(f"Unknown LLM_PROVIDER '{LLM_PROVIDER}' (use 'openai' or 'anthropic')")
 
 
 def build_graph(llm=None):
     """Compile the agent graph. Pass `llm` to inject a fake model in tests."""
     if llm is None:
-        llm = ChatAnthropic(model=MODEL_NAME, max_tokens=MAX_TOKENS)
+        llm = make_llm()
     llm_with_tools = llm.bind_tools(TOOLS)
 
     def agent(state: MessagesState):

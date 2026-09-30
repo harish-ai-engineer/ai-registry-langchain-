@@ -1,11 +1,11 @@
 # LangGraph Tool Agent
 
-A simple LangGraph agent that uses Claude as its LLM and has three tools.
+A simple LangGraph agent that uses OpenAI (or Claude) as its LLM and has three tools.
 
 ## Flow
 
 ```
-START ──▶ agent (Claude) ──has tool calls?──▶ tools ──┐
+START ──▶ agent (LLM) ─────has tool calls?──▶ tools ──┐
               ▲               │ no                    │
               │               ▼                       │
               │              END                      │
@@ -16,7 +16,7 @@ START ──▶ agent (Claude) ──has tool calls?──▶ tools ──┐
 
 ```
 app/
-  config.py   # model name, max tokens, system prompt (from env)
+  config.py   # provider (openai/anthropic), model names, system prompt
   tools.py    # calculator, get_current_datetime, convert_units
   graph.py    # StateGraph: agent node + ToolNode + conditional edge
   main.py     # CLI chat application
@@ -29,7 +29,7 @@ tests/
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # then put your ANTHROPIC_API_KEY in .env
+cp .env.example .env   # then put your OPENAI_API_KEY in .env
 ```
 
 ## Run
