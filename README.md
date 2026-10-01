@@ -1,6 +1,6 @@
 # LangGraph Tool Agent
 
-A simple LangGraph agent that uses OpenAI as its LLM and has three tools.
+A simple LangGraph agent that uses Claude or Gemini as its LLM and has three tools.
 
 ## Flow
 
@@ -16,7 +16,7 @@ START ──▶ agent (LLM) ─────has tool calls?──▶ tools ──
 
 ```
 app/
-  config.py   # OpenAI model name, system prompt
+  config.py   # provider (anthropic/google), model names, system prompt
   tools.py    # calculator, get_current_datetime, convert_units
   graph.py    # StateGraph: agent node + ToolNode + conditional edge
   main.py     # CLI chat application
@@ -29,7 +29,7 @@ tests/
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env   # then put your OPENAI_API_KEY in .env
+cp .env.example .env   # then set LLM_PROVIDER and its API key in .env
 ```
 
 ## Run
