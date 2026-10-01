@@ -7,21 +7,15 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, MessagesState, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from app.config import ANTHROPIC_MODEL, LLM_PROVIDER, MAX_TOKENS, OPENAI_MODEL, SYSTEM_PROMPT
+from app.config import OPENAI_MODEL, SYSTEM_PROMPT
 from app.tools import TOOLS
 
 
 def make_llm():
-    """Create the chat model for the provider set in LLM_PROVIDER."""
-    if LLM_PROVIDER == "openai":
-        from langchain_openai import ChatOpenAI
+    """Create the OpenAI chat model."""
+    from langchain_openai import ChatOpenAI
 
-        return ChatOpenAI(model=OPENAI_MODEL)
-    if LLM_PROVIDER == "anthropic":
-        from langchain_anthropic import ChatAnthropic
-
-        return ChatAnthropic(model=ANTHROPIC_MODEL, max_tokens=MAX_TOKENS)
-    raise ValueError(f"Unknown LLM_PROVIDER '{LLM_PROVIDER}' (use 'openai' or 'anthropic')")
+    return ChatOpenAI(model=OPENAI_MODEL)
 
 
 def build_graph(llm=None):

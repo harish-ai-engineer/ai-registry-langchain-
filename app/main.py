@@ -10,7 +10,7 @@ from app.graph import build_graph
 
 
 def _text_of(message: AIMessage) -> str:
-    """Return only the text parts (Claude responses may also contain thinking blocks)."""
+    """Return only the text parts of a (possibly multi-part) message."""
     if isinstance(message.content, str):
         return message.content
     return "".join(b.get("text", "") for b in message.content if b.get("type") == "text")

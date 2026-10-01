@@ -1,6 +1,6 @@
 # LangGraph Tool Agent
 
-A simple LangGraph agent that uses OpenAI (or Claude) as its LLM and has three tools.
+A simple LangGraph agent that uses OpenAI as its LLM and has three tools.
 
 ## Flow
 
@@ -16,7 +16,7 @@ START ──▶ agent (LLM) ─────has tool calls?──▶ tools ──
 
 ```
 app/
-  config.py   # provider (openai/anthropic), model names, system prompt
+  config.py   # OpenAI model name, system prompt
   tools.py    # calculator, get_current_datetime, convert_units
   graph.py    # StateGraph: agent node + ToolNode + conditional edge
   main.py     # CLI chat application
